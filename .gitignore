@@ -19,7 +19,12 @@ progress.json
 # Buildozer / Android build files
 .buildozer/
 bin/
+# Ignore generated APKs by default
 *.apk
+
+# But allow APKs manually placed here
+!apk/
+!apk/*.apk
 *.aab
 *.keystore
 
