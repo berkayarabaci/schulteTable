@@ -38,13 +38,25 @@ class LevelsScreen(Screen):
         )
         self.root_layout.add_widget(title)
 
-        progress = self.storage.load()
-        highest_unlocked = progress.get("highest_unlocked_level", 1)
-        completed_levels = set(progress.get("completed_levels", []))
+        profile = self.storage.load_profile()
+        highest_unlocked = profile.highest_unlocked_level
+
+        progress_label = Label(
+            text=(
+                f"{profile.name} | Level {profile.player_level} | "
+                f"XP: {profile.xp} | Coins: {profile.coins}"
+            ),
+            font_size=dp(14),
+            color=ColorPalette.MUTED_TEXT,
+            size_hint=(1, None),
+            height=dp(30),
+            pos_hint={"center_x": 0.5, "top": 0.89},
+        )
+        self.root_layout.add_widget(progress_label)
 
         scroll = ScrollView(
-            size_hint=(0.9, 0.72),
-            pos_hint={"center_x": 0.5, "top": 0.84},
+            size_hint=(0.9, 0.68),
+            pos_hint={"center_x": 0.5, "top": 0.82},
         )
 
         levels = self.level_repository.get_levels()
@@ -57,11 +69,20 @@ class LevelsScreen(Screen):
         grid.bind(minimum_height=grid.setter("height"))
 
         for level in levels:
-            is_unlocked = level.level_number <= highest_unlocked
-            is_completed = level.level_number in completed_levels
+            level_key = f"level_{level.level_number}"
+            level_progress = profile.level_progress.get(level_key)
 
-            if is_completed:
-                prefix = "✓"
+            is_unlocked = level.level_number <= highest_unlocked
+
+            stars = level_progress.stars if level_progress else 0
+            stars_text = "★" * stars + "☆" * (3 - stars)
+
+            best_text = ""
+            if level_progress and level_progress.best_time is not None:
+                best_text = f" | Best: {level_progress.best_time:.1f}s"
+
+            if stars > 0:
+                prefix = stars_text
                 color = ColorPalette.GREEN
             elif is_unlocked:
                 prefix = "▶"
@@ -71,11 +92,15 @@ class LevelsScreen(Screen):
                 color = ColorPalette.DARK_BUTTON
 
             button = AppButton(
-                text=f"{prefix} Level {level.level_number}: {level.mode.value.capitalize()} {level.grid_size}x{level.grid_size}",
-                font_size=dp(17),
+                text=(
+                    f"{prefix}  Level {level.level_number}: "
+                    f"{level.mode.value.capitalize()} {level.grid_size}x{level.grid_size}"
+                    f"{best_text}"
+                ),
+                font_size=dp(14),
                 background_color=color,
                 size_hint_y=None,
-                height=dp(56),
+                height=dp(60),
                 disabled=not is_unlocked,
             )
 

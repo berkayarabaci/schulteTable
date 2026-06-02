@@ -20,7 +20,7 @@ class MenuScreen(Screen):
             color=ColorPalette.TEXT,
             size_hint=(1, None),
             height=dp(70),
-            pos_hint={"center_x": 0.5, "top": 0.92},
+            pos_hint={"center_x": 0.5, "top": 0.95},
         )
         root.add_widget(title)
 
@@ -30,59 +30,81 @@ class MenuScreen(Screen):
             color=ColorPalette.MUTED_TEXT,
             size_hint=(1, None),
             height=dp(35),
-            pos_hint={"center_x": 0.5, "top": 0.82},
+            pos_hint={"center_x": 0.5, "top": 0.86},
         )
         root.add_widget(subtitle)
 
         play_button = AppButton(
             text="Play Modes",
-            font_size=dp(23),
+            font_size=dp(22),
             background_color=ColorPalette.BLUE,
             size_hint=(0.76, None),
-            height=dp(60),
-            pos_hint={"center_x": 0.5, "top": 0.62},
+            height=dp(54),
+            pos_hint={"center_x": 0.5, "top": 0.70},
         )
         play_button.bind(on_press=self.go_to_modes)
         root.add_widget(play_button)
 
         levels_button = AppButton(
             text="Levels",
-            font_size=dp(23),
+            font_size=dp(22),
             background_color=ColorPalette.PURPLE,
             size_hint=(0.76, None),
-            height=dp(60),
-            pos_hint={"center_x": 0.5, "top": 0.50},
+            height=dp(54),
+            pos_hint={"center_x": 0.5, "top": 0.60},
         )
         levels_button.bind(on_press=self.go_to_levels)
         root.add_widget(levels_button)
 
+        profile_button = AppButton(
+            text="Profile",
+            font_size=dp(22),
+            background_color=ColorPalette.GREEN,
+            size_hint=(0.76, None),
+            height=dp(54),
+            pos_hint={"center_x": 0.5, "top": 0.50},
+        )
+        profile_button.bind(on_press=self.go_to_profile)
+        root.add_widget(profile_button)
+
+        settings_button = AppButton(
+            text="Settings",
+            font_size=dp(21),
+            background_color=ColorPalette.ORANGE,
+            size_hint=(0.76, None),
+            height=dp(54),
+            pos_hint={"center_x": 0.5, "top": 0.40},
+        )
+        settings_button.bind(on_press=self.go_to_settings)
+        root.add_widget(settings_button)
+
         daily_button = AppButton(
             text="Daily Quest - Coming Soon",
-            font_size=dp(20),
+            font_size=dp(18),
             background_color=ColorPalette.DARK_BUTTON,
             size_hint=(0.76, None),
-            height=dp(58),
-            pos_hint={"center_x": 0.5, "top": 0.38},
+            height=dp(52),
+            pos_hint={"center_x": 0.5, "top": 0.30},
         )
         root.add_widget(daily_button)
 
         login_button = AppButton(
             text="Google Sign-In - Coming Soon",
-            font_size=dp(19),
+            font_size=dp(17),
             background_color=ColorPalette.DARK_BUTTON,
             size_hint=(0.76, None),
-            height=dp(58),
-            pos_hint={"center_x": 0.5, "top": 0.26},
+            height=dp(52),
+            pos_hint={"center_x": 0.5, "top": 0.20},
         )
         root.add_widget(login_button)
 
         footer = Label(
-            text="Online features will be added after offline systems are stable",
+            text="Offline progress saves locally on this device",
             font_size=dp(13),
             color=(0.55, 0.58, 0.66, 1),
             size_hint=(1, None),
             height=dp(35),
-            pos_hint={"center_x": 0.5, "y": 0.04},
+            pos_hint={"center_x": 0.5, "y": 0.03},
         )
         root.add_widget(footer)
 
@@ -95,3 +117,11 @@ class MenuScreen(Screen):
     def go_to_levels(self, button):
         button.animate_tap()
         App.get_running_app().root.current = "levels"
+
+    def go_to_profile(self, button):
+        button.animate_tap()
+        App.get_running_app().root.current = "profile"
+
+    def go_to_settings(self, button):
+        button.animate_tap()
+        App.get_running_app().root.current = "settings"
